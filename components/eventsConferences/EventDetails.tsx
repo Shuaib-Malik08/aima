@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar, MapPin, Download, Award, Landmark, User } from "lucide-react";
 import Link from "next/link";
 
@@ -51,6 +51,42 @@ export default function EventDetails({ eventData }: { eventData: EventData }) {
   );
 
   const activeTab = tabs.find((t) => t.id === activeTabId);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let isMounted = true;
+    const initWow = async () => {
+      try {
+        const wowModule = await import("wowjs");
+        if (!isMounted) return;
+        const WOW = wowModule.WOW || (wowModule as any).default?.WOW;
+        if (WOW) {
+          const wow = new WOW({
+            boxClass: "wow",
+            animateClass: "animate__animated",
+            offset: 30,
+            mobile: true,
+            live: true,
+          });
+          wow.init();
+        }
+      } catch (e) {
+        // ignore
+      }
+    };
+
+    const timer = setTimeout(() => {
+      void initWow();
+    }, 100);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+    };
+  }, [eventData, activeTabId]);
+
 
   // Format date helper
   const formatDate = (dateStr: string) => {
@@ -115,7 +151,7 @@ export default function EventDetails({ eventData }: { eventData: EventData }) {
       </nav>
 
       {/* Hero Header Banner */}
-      <div className="relative bg-gradient-to-br from-[#0B2545] via-[#0C478B] to-[#134074] rounded-3xl overflow-hidden shadow-2xl mb-12 text-white border border-white/10">
+      <div className="wow animate__animated animate__fadeInDown relative bg-gradient-to-br from-[#0B2545] via-[#0C478B] to-[#134074] rounded-3xl overflow-hidden shadow-2xl mb-12 text-white border border-white/10" data-wow-duration="0.9s">
         {/* Abstract design overlays */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(228,171,37,0.18),transparent_55%)]" />
         <div className="absolute inset-0 bg-grid-white/[0.03] [mask-image:linear-gradient(to_bottom,white,transparent)]" />
@@ -203,10 +239,11 @@ export default function EventDetails({ eventData }: { eventData: EventData }) {
         </div>
       </div>
 
+
       {/* Main Split Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
         {/* Left Side Content - About and Tabs */}
-        <div className="lg:col-span-8 space-y-12 text-left">
+        <div className="wow animate__animated animate__fadeInLeft lg:col-span-8 space-y-12 text-left" data-wow-duration="0.9s" data-wow-delay="0.1s">
           {/* About / Description */}
           {eventData.short_description && (
             <div className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-sm">
@@ -277,13 +314,14 @@ export default function EventDetails({ eventData }: { eventData: EventData }) {
         </div>
 
         {/* Right Side Sidebar - Quick Info, Contact, Speakers */}
-        <div className="lg:col-span-4 space-y-8 text-left">
+        <div className="wow animate__animated animate__fadeInRight lg:col-span-4 space-y-8 text-left" data-wow-duration="0.9s" data-wow-delay="0.2s">
           {/* Quick Stats Widget */}
           <div className="bg-gradient-to-b from-gray-50 to-white rounded-2xl border border-gray-100 p-6 shadow-sm">
             <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
               <Landmark className="w-5 h-5 text-[#0C478B]" />
               <span>Event Information</span>
             </h3>
+
 
             <div className="space-y-4 text-sm border-t border-gray-100 pt-4">
               <div>

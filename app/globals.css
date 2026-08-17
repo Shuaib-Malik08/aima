@@ -1,5 +1,7 @@
 @import "tailwindcss";
+@import "animate.css/animate.min.css";
 @import "wowjs/css/libs/animate.css";
+
 
 
 :root {

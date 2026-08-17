@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { submitContactForm } from "@/actionCreator/home.actionCreator";
+
 
 export interface SpeakerItem {
   id: number;
@@ -143,6 +144,42 @@ export default function EventSubTypeDetails({
   const [testimonialsPageIndex, setTestimonialsPageIndex] = useState(0);
 
   const ITEMS_PER_PAGE = 3;
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let isMounted = true;
+    const initOrSyncWow = async () => {
+      try {
+        const wowModule = await import("wowjs");
+        if (!isMounted) return;
+        const WOW = wowModule.WOW || (wowModule as any).default?.WOW;
+        if (WOW) {
+          const wow = new WOW({
+            boxClass: "wow",
+            animateClass: "animate__animated",
+            offset: 30,
+            mobile: true,
+            live: true,
+          });
+          wow.init();
+        }
+      } catch (e) {
+        // ignore
+      }
+    };
+
+    const timer = setTimeout(() => {
+      void initOrSyncWow();
+    }, 100);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+    };
+  }, [eventsPageIndex, galleryPageIndex, testimonialsPageIndex, data]);
+
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

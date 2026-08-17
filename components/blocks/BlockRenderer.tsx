@@ -67,13 +67,6 @@ const ADS_NAME_MAP: Record<string, React.ComponentType<{ block: any }>> = {
   "Events & Conferences Banner": EventHeroSection as React.ComponentType<{
     block: any;
   }>,
-  InternationalEvent: InternationalEvent as React.ComponentType<{ block: any }>,
-  "International Events": InternationalEvent as React.ComponentType<{ block: any }>,
-  "International Event": InternationalEvent as React.ComponentType<{ block: any }>,
-  "International Event Listing": InternationalEvent as React.ComponentType<{ block: any }>,
-  "National Events": InternationalEvent as React.ComponentType<{ block: any }>,
-  "National Event": InternationalEvent as React.ComponentType<{ block: any }>,
-  "National Event Listing": InternationalEvent as React.ComponentType<{ block: any }>,
   "AIMA Awards": EventAward as React.ComponentType<{ block: any }>,
   "Testing and Assessment Banner": TestingHeroSection as React.ComponentType<{
     block: any;
@@ -142,6 +135,20 @@ export default function BlockRenderer({ block }: Props) {
   }
 
   if (block.type === "dynamic") {
+    // 1. National or International events block
+    if (
+      block.module_code === "national" ||
+      block.module_code === "international" ||
+      block.name?.toLowerCase().includes("international event") ||
+      block.name?.toLowerCase().includes("national event") ||
+      block.name?.toLowerCase().includes("national events dynamic") ||
+      (Array.isArray(block.sub_module) &&
+        (block.sub_module.includes("national") ||
+          block.sub_module.includes("international")))
+    ) {
+      return <InternationalEvent block={block as any} />;
+    }
+
     if (
       block.name === "Sub Category Listing" ||
       block.name?.toLowerCase().includes("sub category") ||
@@ -213,19 +220,6 @@ export default function BlockRenderer({ block }: Props) {
     }
 
     if (
-      block.name?.toLowerCase().includes("international event") ||
-      block.name?.toLowerCase().includes("national event") ||
-      block.name?.toLowerCase().includes("national events dynamic") ||
-      block.module_code === "national" ||
-      block.module_code === "international" ||
-      (Array.isArray(block.sub_module) &&
-        (block.sub_module.includes("national") ||
-          block.sub_module.includes("international")))
-    ) {
-      return <InternationalEvent block={block as any} />;
-    }
-
-    if (
       Array.isArray(block.sub_module) &&
       block.sub_module.includes("press-releases")
     ) {
@@ -239,3 +233,4 @@ export default function BlockRenderer({ block }: Props) {
 
   return null;
 }
+
