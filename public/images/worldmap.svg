@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="100%" height="100%" fill="none">
+  <defs>
+    <pattern id="dot-grid" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.5" fill="#0C478B" fill-opacity="0.08"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#dot-grid)"/>
+  <g fill="#0C478B" fill-opacity="0.06">
+    <!-- North America -->
+    <path d="M150,120 Q220,100 290,150 Q310,220 260,280 Q200,320 180,240 Q130,200 150,120 Z"/>
+    <!-- South America -->
+    <path d="M280,330 Q360,350 340,440 Q300,530 270,500 Q240,430 280,330 Z"/>
+    <!-- Europe -->
+    <path d="M520,110 Q610,100 640,160 Q600,210 530,200 Q490,160 520,110 Z"/>
+    <!-- Africa -->
+    <path d="M520,230 Q630,240 640,340 Q620,450 560,470 Q490,380 520,230 Z"/>
+    <!-- Asia -->
+    <path d="M660,110 Q850,90 980,180 Q960,300 840,330 Q720,340 680,220 Q650,160 660,110 Z"/>
+    <!-- Australia -->
+    <path d="M880,400 Q970,390 990,460 Q940,520 870,490 Q850,440 880,400 Z"/>
+  </g>
+</svg>
